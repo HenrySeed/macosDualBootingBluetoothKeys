@@ -13,4 +13,4 @@ You can then copy this to GoogleDrive (or another cloud storage)
 Reboot into Windows and paste these keys under the corrosponding Interface in `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\BTHPORT\Parameters\Keys\$INTERFACE_ID`
 
 
-![screenshot](https://i.imgur.com/S0lpBTi.jpg)
+![screenshot](https://i.imgur.com/A3QiKrt.jpg)
