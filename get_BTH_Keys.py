@@ -1,3 +1,16 @@
+#                  ___  ___   ___ _     _  __            
+#   _ __  __ _ __ / _ \/ __| | _ ) |_  | |/ /___ _  _ ___
+#  | '  \/ _` / _| (_) \__ \ | _ \  _| | ' </ -_) || (_-<
+#  |_|_|_\__,_\__|\___/|___/ |___/\__| |_|\_\___|\_, /__/
+#                                                |__/    
+#     ~ Henry Seed (2020)
+# 
+#   https://github.com/HenrySeed/macosDualBootingBluetoothKeys
+# 
+#   Converts macOS bluetooth keys into the format accepted by Windows Regestry Editor
+
+
+
 import plistlib
 
 """
@@ -8,24 +21,33 @@ import plistlib
         e6acbe // rejoin
 """
 def littleEndian_to_bigEndian(string):
+    hex_vals = split_key_into_sets(string).split(" ")
+    hex_vals.reverse()
+    return " ".join(hex_vals)
+
+
+"""
+    Takes a key like beace6b61df5631be93bc50862e48da8 and splits it like be ac e6 b6 1d f5 63 1b e9 3b c5 08 62 e4 8d a8
+"""
+def split_key_into_sets(string):
     hex_vals = []
     index = 0
-    buffer = ""
+    buffer = "" 
     while index < len(string):
         buffer += string[index]
         if index % 2 != 0:
             hex_vals.append(buffer)
             buffer = ""
         index += 1
+    return " ".join(hex_vals)
 
-    hex_vals.reverse()
-    return "".join(hex_vals)
 
 """
     Splits a 24-char hex code into 4 sections of 8 chars each, seperated by a space
 """
 def split_hex(hex_str):
-    return " ".join([hex_str[0:8], hex_str[8:16], hex_str[16:24], hex_str[24:32]])
+    return " ".join([hex_str[0:12], hex_str[12:24], hex_str[24:36 ], hex_str[36:48]])
+
 
 """
     Prints the interface object
@@ -60,7 +82,7 @@ def get_interfaces(plist):
 
         for device_key, device_val in interface_val.items():
             val_decoded = device_val.hex()
-            mac_interface.append([device_key, split_hex(val_decoded)])
+            mac_interface.append([device_key, split_hex(split_key_into_sets(val_decoded))])
             win_interface.append([device_key, split_hex(littleEndian_to_bigEndian(val_decoded))])
 
         mac_interfaces.append([interface_ID, mac_interface])
